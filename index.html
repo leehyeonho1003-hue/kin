@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LEGION ARCHIVE // 레기온 아지트 블로그</title>
+  <style>
+    :root {
+      --bg-main: #0d1017;
+      --bg-surface: #151a24;
+      --bg-surface-hover: #1c2331;
+      --bg-elevated: #222a3b;
+      --border: #283246;
+      --text-main: #e6edf7;
+      --text-muted: #8e9bb0;
+      --accent: #6c8cff;
+      --accent-2: #9b6cff;
+      --accent-soft: rgba(108, 140, 255, 0.14);
+      --success: #34d399;
+      --warning: #fbbf24;
+      --pink: #f472b6;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* 상단 헤더 */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(13, 16, 23, 0.86);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(108, 140, 255, 0.25);
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      max-width: 540px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 180px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box:focus {
+      border-color: var(--accent);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 9px 13px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: var(--bg-surface);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      background: var(--bg-surface-hover);
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 12.5px;
+      border-radius: 8px;
+    }
+
+    /* 메인 컨테이너 */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 24px 20px 64px;
+    }
+
+    /* 레기온 요약 배너 */
+    .hero-card {
+      background: linear-gradient(135deg, var(--accent-soft), rgba(244, 114, 182, 0.06));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-card h1 {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .hero-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 13px;
+    }
+
+    .stat-pill strong {
+      color: var(--accent);
+      margin-left: 5px;
+    }
+
+    /* 탭 네비게이션 */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.18s;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      color: var(--text-main);
+      border-bottom-color: var(--accent);
+    }
+
+    /* 피드 그리드 */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      transition: transform 0.18s, border-color 0.18s, background 0.18s;
+    }
+
+    .card.clickable {
+      cursor: pointer;
+    }
+
+    .card.clickable:hover {
+      transform: translateY(-3px);
+      border-color: #3b4a69;
+      background: var(--bg-surface-hover);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .tag.guide {
+      background: rgba(52, 211, 153, 0.14);
+      color: var(--success);
+    }
+
+    .tag.gallery {
+      background: rgba(244, 114, 182, 0.14);
+      color: var(--pink);
+    }
+
+    .tag.chat {
+      background: rgba(251, 191, 36, 0.14);
+      color: var(--warning);
+    }
+
+    .tag.recruit {
+      background: rgba(155, 108, 255, 0.16);
+      color: #b794ff;
+    }
+
+    .date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .card-thumb {
+      width: 100%;
+      height: 160px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .card-excerpt {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--bg-elevated);
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* 투표 & 모집 섹션 */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .poll-option {
+      width: 100%;
+      text-align: left;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--text-main);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 8px;
+      transition: border-color 0.18s;
+    }
+
+    .poll-option:hover {
+      border-color: var(--accent);
+    }
+
+    .poll-option.voted {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .poll-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: var(--accent-soft);
+      z-index: 0;
+      transition: width 0.25s ease;
+    }
+
+    .poll-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      gap: 8px;
+    }
+
+    .member-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px 0;
+    }
+
+    .chip {
+      font-size: 12px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      padding: 3px 9px;
+      border-radius: 999px;
+      color: var(--text-main);
+    }
+
+    /* 위키 섹션 */
+    .wiki-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .wiki-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .wiki-box h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: var(--accent);
+    }
+
+    .wiki-box ul {
+      padding-left: 18px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .wiki-box li {
+      margin-bottom: 6px;
+    }
+
+    /* 모달 */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 8, 13, 0.78);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 50;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 640px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      max-height: 88vh;
+      overflow-y: auto;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .close-btn {
+      background: var(--bg-elevated);
+      border: none;
+      color: var(--text-main);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--text-main);
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    textarea.form-control {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .color-swatches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .swatch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 10px;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .swatch-btn.active {
+      border-color: var(--text-main);
+      background: var(--bg-elevated);
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      background: var(--bg-surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-badge" id="brandBadge">L</div>
+        <div>
+          <div class="brand-title" id="brandTitle">LEGION ARCHIVE</div>
+          <div class="brand-sub" id="brandSub">레기온 기록 · 공략 · 스샷 아지트</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <input
+          id="searchInput"
+          class="search-box"
+          type="text"
+          placeholder="제목, 내용, 작성자 검색..."
+        />
+        <button class="btn btn-ghost" id="openSettingsBtn">⚙ 레기온 설정</button>
+        <button class="btn btn-primary" id="openWriteBtn">+ 새 글</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero-card">
+      <div>
+        <h1 id="heroTitle">오늘도 수고 많았어요, 레기온 여러분 🌙</h1>
+        <p id="heroDesc">공략 정리부터 레이드 후기, 스샷 기록과 투표·모집까지 한곳에 모아두는 공간입니다.</p>
+      </div>
+      <div class="stats">
+        <div class="stat-pill">누적 기록<strong id="totalCount">0</strong></div>
+        <div class="stat-pill">진행 중 투표<strong id="pollCount">0</strong></div>
+        <div class="stat-pill">파티 모집<strong id="recruitCount">0</strong></div>
+      </div>
+    </section>
+
+    <nav class="tabs" id="tabBar">
+      <button class="tab-btn active" data-tab="all">전체 피드</button>
+      <button class="tab-btn" data-tab="recruit">투표 / 모집</button>
+      <button class="tab-btn" data-tab="guide">공략 & 가이드</button>
+      <button class="tab-btn" data-tab="gallery">스샷 갤러리</button>
+      <button class="tab-btn" data-tab="chat">잡담 & 일지</button>
+      <button class="tab-btn" data-tab="wiki">레기온 위키</button>
+    </nav>
+
+    <section id="contentArea"></section>
+  </main>
+
+  <!-- 글 읽기 모달 -->
+  <div class="modal-backdrop" id="detailModal">
+    <div class="modal">
+      <div class="modal-head">
+        <span class="tag" id="detailTag">공략</span>
+        <button class="close-btn" id="closeDetailBtn">✕</button>
+      </div>
+      <h2 id="detailTitle" style="font-size:22px; margin-bottom:8px;"></h2>
+      <div id="detailMeta" style="font-size:13px; color:var(--text-muted); margin-bottom:16px;"></div>
+      <img id="detailImg" class="card-thumb" style="height:240px; margin-bottom:16px; display:none;" alt="" />
+      <div id="detailBody" style="white-space:pre-line; font-size:15px; color:var(--text-main);"></div>
+    </div>
+  </div>
+
+  <!-- 새 글 작성 모달 -->
+  <div class="modal-backdrop" id="writeModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 style="font-size:18px;">새 기록 남기기</h2>
+        <button class="close-btn" id="closeWriteBtn">✕</button>
+      </div>
+      <form id="writeForm">
+        <div class="form-group">
+          <label for="postCategory">탭 / 카테고리</label>
+          <select id="postCategory" class="form-control">
+            <option value="guide">공략 & 가이드</option>
+            <option value="gallery">스샷 갤러리</option>
+            <option value="chat">잡담 & 일지</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="postAuthor">닉네임</label>
+          <input id="postAuthor" class="form-control" type="text" placeholder="예: 서리빛" required />
+        </div>
+        <div class="form-group">
+          <label for="postTitle">제목</label>
+          <input id="postTitle" class="form-control" type="text" placeholder="제목을 입력하세요" required />
+        </div>
+        <div class="form-group">
+          <label for="postImage">이미지 URL (스샷 갤러리용, 선택)</label>
+          <input id="postImage" class="form-control" type="url" placeholder="https://..." />
+        </div>
+        <div class="form-group">
+          <label for="postContent">내용</label>
+          <textarea id="postContent" class="form-control" placeholder="공략 팁, 오늘 있었던 일, 소감 등을 자유롭게 적어주세요." required></textarea>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn btn-ghost" id="cancelWriteBtn">취소</button>
+          <button type="submit" class="btn btn-primary">등록하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 새 투표 생성 모달 -->
+  <div class="modal-backdrop" id="pollModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 style="font-size:18px;">새 투표 만들기</h2>
+        <button class="close-btn" id="closePollBtn">✕</button>
+      </div>
+      <form id="pollForm">
+        <div class="form-group">
+          <label for="pollQuestion">투표 주제</label>
+          <input id="pollQuestion" class="form-control" type="text" placeholder="예: 이번 주 정규 레이드 시간 언제 좋을까요?" required />
+        </div>
+        <div class="form-group">
+          <label for="pollAuthor">작성자</label>
+          <input id="pollAuthor" class="form-control" type="text" placeholder="예: 하늘정원" required />
+        </div>
+        <div class="form-group">
+          <label for="pollOptions">선택지 (줄바꿈으로 구분, 2개 이상)</label>
+          <textarea id="pollOptions" class="form-control" placeholder="수요일 21:00&#10;목요일 21:30&#10;토요일 20:00" required></textarea>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn btn-ghost" id="cancelPollBtn">취소</button>
+          <button type="submit" class="btn btn-primary">투표 등록</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 새 모집 생성 모달 -->
+  <div class="modal-backdrop" id="recruitModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 style="font-size:18px;">새 파티 / 멤버 모집</h2>
+        <button class="close-btn" id="closeRecruitBtn">✕</button>
+      </div>
+      <form id="recruitForm">
+        <div class="form-group">
+          <label for="recruitTitle">모집 제목</label>
+          <input id="recruitTitle" class="form-control" type="text" placeholder="예: 금요일 22:00 주간 던전 4인 모집" required />
+        </div>
+        <div class="form-group">
+          <label for="recruitHost">모집장 닉네임</label>
+          <input id="recruitHost" class="form-control" type="text" placeholder="예: 노을빛" required />
+        </div>
+        <div class="form-group">
+          <label for="recruitMax">모집 정원 (본인 포함)</label>
+          <input id="recruitMax" class="form-control" type="number" min="2" max="24" value="4" required />
+        </div>
+        <div class="form-group">
+          <label for="recruitNote">안내 / 역할 / 조건</label>
+          <textarea id="recruitNote" class="form-control" placeholder="초행 환영, 디코 청취 가능하신 분, 출발 시간 등" required></textarea>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn btn-ghost" id="cancelRecruitBtn">취소</button>
+          <button type="submit" class="btn btn-primary">모집 올리기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 레기온 개성 설정 모달 -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 style="font-size:18px;">⚙ 레기온 개성 커스텀</h2>
+        <button class="close-btn" id="closeSettingsBtn">✕</button>
+      </div>
+      <form id="settingsForm">
+        <div class="form-group">
+          <label for="cfgBadge">로고 이니셜 / 엠블럼 (1~2글자)</label>
+          <input id="cfgBadge" class="form-control" type="text" maxlength="2" required />
+        </div>
+        <div class="form-group">
+          <label for="cfgName">레기온 이름</label>
+          <input id="cfgName" class="form-control" type="text" required />
+        </div>
+        <div class="form-group">
+          <label for="cfgSub">헤더 부제</label>
+          <input id="cfgSub" class="form-control" type="text" required />
+        </div>
+        <div class="form-group">
+          <label for="cfgHeroTitle">메인 환영 문구</label>
+          <input id="cfgHeroTitle" class="form-control" type="text" required />
+        </div>
+        <div class="form-group">
+          <label for="cfgHeroDesc">메인 소개 문구</label>
+          <input id="cfgHeroDesc" class="form-control" type="text" required />
+        </div>
+        <div class="form-group">
+          <label>포인트 컬러 테마</label>
+          <div class="color-swatches" id="swatchGroup">
+            <button type="button" class="swatch-btn" data-theme="blue">
+              <span class="dot" style="background:#6c8cff;"></span>문라이트 블루
+            </button>
+            <button type="button" class="swatch-btn" data-theme="violet">
+              <span class="dot" style="background:#a78bfa;"></span>네뷸라 바이올렛
+            </button>
+            <button type="button" class="swatch-btn" data-theme="emerald">
+              <span class="dot" style="background:#34d399;"></span>포레스트 에메랄드
+            </button>
+            <button type="button" class="swatch-btn" data-theme="rose">
+              <span class="dot" style="background:#fb7185;"></span>크림슨 로즈
+            </button>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-ghost" id="resetSettingsBtn">기본값 복원</button>
+          <div style="display:flex; gap:10px;">
+            <button type="button" class="btn btn-ghost" id="cancelSettingsBtn">취소</button>
+            <button type="submit" class="btn btn-primary">저장하기</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const KEYS = {
+      posts: "legion_archive_posts_v2",
+      polls: "legion_archive_polls_v1",
+      recruits: "legion_archive_recruits_v1",
+      config: "legion_archive_config_v1"
+    };
+
+    const defaultConfig = {
+      badge: "L",
+      name: "LEGION ARCHIVE",
+      sub: "레기온 기록 · 공략 · 스샷 아지트",
+      heroTitle: "오늘도 수고 많았어요, 레기온 여러분 🌙",
+      heroDesc: "공략 정리부터 레이드 후기, 스샷 기록과 투표·모집까지 한곳에 모아두는 공간입니다.",
+      theme: "blue"
+    };
+
+    const themes = {
+      blue: {
+        accent: "#6c8cff",
+        accent2: "#9b6cff",
+        accentSoft: "rgba(108, 140, 255, 0.14)"
+      },
+      violet: {
+        accent: "#a78bfa",
+        accent2: "#ec4899",
+        accentSoft: "rgba(167, 139, 250, 0.15)"
+      },
+      emerald: {
+        accent: "#34d399",
+        accent2: "#2dd4bf",
+        accentSoft: "rgba(52, 211, 153, 0.14)"
+      },
+      rose: {
+        accent: "#fb7185",
+        accent2: "#f59e0b",
+        accentSoft: "rgba(251, 113, 133, 0.15)"
+      }
+    };
+
+    const initialPosts = [
+      {
+        id: 1,
+        category: "guide",
+        title: "주간 레이드 핵심 패턴 요약 & 준비물 체크리스트",
+        author: "하늘정원",
+        date: "2026-11-18",
+        image: "",
+        content:
+          "1페이즈 광역기 타이밍에는 중앙 집결 후 외곽 분산이 핵심입니다.\n\n- 필수 소모품: 회복 물약, 보호 주문서\n- 출발 10분 전 음성/파티 채널 대기\n- 초행 분들도 편하게 질문 남겨주세요!"
+      },
+      {
+        id: 2,
+        category: "gallery",
+        title: "첫 클리어 기념 레기온 단체 스샷 📸",
+        author: "노을빛",
+        date: "2026-11-19",
+        image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80",
+        content:
+          "트라이 끝에 드디어 첫 클리어! 다들 늦은 시간까지 고생 많으셨고 다음 주엔 더 깔끔하게 정리해봐요."
+      },
+      {
+        id: 3,
+        category: "chat",
+        title: "오늘 저녁 일퀘 같이 도실 분 계신가요?",
+        author: "달토끼",
+        date: "2026-11-20",
+        image: "",
+        content:
+          "9시 반쯤 접속해서 일퀘랑 재료 파밍 가볍게 돌 생각입니다. 편하게 댓글이나 귓말 주세요~"
+      }
+    ];
+
+    const initialPolls = [
+      {
+        id: 101,
+        question: "이번 주 정규 콘텐츠 진행 요일 투표",
+        author: "하늘정원",
+        date: "2026-11-20",
+        options: [
+          { id: "a", text: "수요일 21:00", votes: 5 },
+          { id: "b", text: "목요일 21:30", votes: 7 },
+          { id: "c", text: "토요일 20:00", votes: 4 }
+        ],
+        pickedOptionId: null
+      }
+    ];
+
+    const initialRecruits = [
+      {
+        id: 201,
+        title: "오늘 22:00 주간 던전 4인 파티 모집",
+        host: "노을빛",
+        max: 4,
+        members: ["노을빛", "달토끼"],
+        note: "초행/숙련 모두 환영! 편하게 닉네임 남기고 참여 눌러주세요."
+      }
+    ];
+
+    const categoryMeta = {
+      guide: { label: "공략 & 가이드", cls: "guide" },
+      gallery: { label: "스샷 갤러리", cls: "gallery" },
+      chat: { label: "잡담 & 일지", cls: "chat" }
+    };
+
+    let config = loadData(KEYS.config, defaultConfig);
+    let posts = loadData(KEYS.posts, initialPosts);
+    let polls = loadData(KEYS.polls, initialPolls);
+    let recruits = loadData(KEYS.recruits, initialRecruits);
+    let currentTab = "all";
+    let searchQuery = "";
+    let selectedTheme = config.theme || "blue";
+
+    function loadData(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return structuredClone(fallback);
+    }
+
+    function saveData(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch (e) {}
+    }
+
+    function applyConfig() {
+      const t = themes[config.theme] || themes.blue;
+      document.documentElement.style.setProperty("--accent", t.accent);
+      document.documentElement.style.setProperty("--accent-2", t.accent2);
+      document.documentElement.style.setProperty("--accent-soft", t.accentSoft);
+
+      document.title = `${config.name} // 레기온 아지트 블로그`;
+      document.getElementById("brandBadge").textContent = (config.badge || "L").toUpperCase();
+      document.getElementById("brandTitle").textContent = config.name;
+      document.getElementById("brandSub").textContent = config.sub;
+      document.getElementById("heroTitle").textContent = config.heroTitle;
+      document.getElementById("heroDesc").textContent = config.heroDesc;
+    }
+
+    function updateStats() {
+      document.getElementById("totalCount").textContent = posts.length;
+      document.getElementById("pollCount").textContent = polls.length;
+      document.getElementById("recruitCount").textContent = recruits.length;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function renderPollsSection() {
+      if (!polls.length) {
+        return `<div class="empty">진행 중인 투표가 없어요. 새 투표를 만들어보세요!</div>`;
+      }
+
+      return `
+        <div class="grid">
+          ${polls
+            .map(poll => {
+              const totalVotes = poll.options.reduce((acc, o) => acc + o.votes, 0);
+              return `
+                <article class="card">
+                  <div>
+                    <div class="card-top" style="margin-bottom:10px;">
+                      <span class="tag recruit">투표</span>
+                      <span class="date">${poll.date} · ${poll.author}</span>
+                    </div>
+                    <h3 class="card-title" style="margin-bottom:12px;">${escapeHtml(poll.question)}</h3>
+                    <div>
+                      ${poll.options
+                        .map(opt => {
+                          const pct = totalVotes ? Math.round((opt.votes / totalVotes) * 100) : 0;
+                          const isPicked = poll.pickedOptionId === opt.id;
+                          return `
+                            <button
+                              type="button"
+                              class="poll-option ${isPicked ? "voted" : ""}"
+                              data-poll-id="${poll.id}"
+                              data-opt-id="${opt.id}"
+                            >
+                              <span class="poll-bar" style="width:${pct}%;"></span>
+                              <span class="poll-row">
+                                <span>${isPicked ? "✓ " : ""}${escapeHtml(opt.text)}</span>
+                                <span><strong>${opt.votes}표</strong> (${pct}%)</span>
+                              </span>
+                            </button>
+                          `;
+                        })
+                        .join("")}
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <span>총 ${totalVotes}표 참여</span>
+                    <span>클릭하여 투표</span>
+                  </div>
+                </article>
+              `;
+            })
+            .join("")}
+        </div>
+      `;
+    }
+
+    function renderRecruitsSection() {
+      if (!recruits.length) {
+        return `<div class="empty">열린 파티 모집이 없어요. 새 모집을 올려보세요!</div>`;
+      }
+
+      return `
+        <div class="grid">
+          ${recruits
+            .map(item => {
+              const isFull = item.members.length >= item.max;
+              return `
+                <article class="card">
+                  <div>
+                    <div class="card-top" style="margin-bottom:10px;">
+                      <span class="tag ${isFull ? "chat" : "guide"}">${isFull ? "모집 마감" : "모집 중"}</span>
+                      <span class="date">${item.members.length} / ${item.max}명</span>
+                    </div>
+                    <h3 class="card-title" style="margin-bottom:6px;">${escapeHtml(item.title)}</h3>
+                    <p class="card-excerpt" style="-webkit-line-clamp:4;">${escapeHtml(item.note)}</p>
+                    <div class="member-chips">
+                      ${item.members.map(m => `<span class="chip">👤 ${escapeHtml(m)}</span>`).join("")}
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <span>모집장: ${escapeHtml(item.host)}</span>
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-sm join-recruit-btn"
+                      data-recruit-id="${item.id}"
+                      ${isFull ? "disabled style='opacity:0.45;cursor:not-allowed;'" : ""}
+                    >
+                      ${isFull ? "정원 마감" : "+ 참여하기"}
+                    </button>
+                  </div>
+                </article>
+              `;
+            })
+            .join("")}
+        </div>
+      `;
+    }
+
+    function renderWiki() {
+      return `
+        <div class="wiki-list">
+          <div class="wiki-box">
+            <h3>📌 레기온 기본 규칙</h3>
+            <ul>
+              <li>서로 존중하고 배려하는 매너 플레이 지향</li>
+              <li>분쟁 유발, 과도한 네타/스포일러는 주의 표시</li>
+              <li>공지 및 정기 일정은 투표·모집 탭에서 확인</li>
+            </ul>
+          </div>
+          <div class="wiki-box">
+            <h3>🧭 신규 멤버 가이드</h3>
+            <ul>
+              <li>상단 '⚙ 레기온 설정'으로 우리 레기온 이름·색상 꾸미기</li>
+              <li>공략 탭에 팁 정리, 스샷 탭에 추억 남기기</li>
+              <li>가벼운 파티나 일퀘도 모집 탭에 편하게 등록</li>
+            </ul>
+          </div>
+          <div class="wiki-box">
+            <h3>🗓️ 정기 모임 안내</h3>
+            <ul>
+              <li>정규 일정은 주간 투표 결과에 따라 확정</li>
+              <li>번개 파티는 모집 탭에서 선착순 참여</li>
+              <li>변경 사항은 상단 공지/피드로 안내</li>
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPostsGrid(list) {
+      if (!list.length) {
+        return `<div class="empty">조건에 맞는 글이 아직 없어요. 새 글을 남겨보세요!</div>`;
+      }
+
+      return `
+        <div class="grid">
+          ${list
+            .map(post => {
+              const meta = categoryMeta[post.category] || { label: "기록", cls: "" };
+              return `
+                <article class="card clickable" data-id="${post.id}">
+                  <div>
+                    <div class="card-top" style="margin-bottom:10px;">
+                      <span class="tag ${meta.cls}">${meta.label}</span>
+                      <span class="date">${post.date}</span>
+                    </div>
+                    ${post.image ? `<img class="card-thumb" src="${post.image}" alt="${escapeHtml(post.title)}" style="margin-bottom:12px;" />` : ""}
+                    <h3 class="card-title" style="margin-bottom:6px;">${escapeHtml(post.title)}</h3>
+                    <p class="card-excerpt">${escapeHtml(post.content)}</p>
+                  </div>
+                  <div class="card-footer">
+                    <div class="author">
+                      <span class="avatar">${escapeHtml(post.author.slice(0, 1))}</span>
+                      <span>${escapeHtml(post.author)}</span>
+                    </div>
+                    <span>읽기 →</span>
+                  </div>
+                </article>
+              `;
+            })
+            .join("")}
+        </div>
+      `;
+    }
+
+    function render() {
+      updateStats();
+      const area = document.getElementById("contentArea");
+
+      if (currentTab === "wiki") {
+        area.innerHTML = renderWiki();
+        return;
+      }
+
+      if (currentTab === "recruit") {
+        area.innerHTML = `
+          <div style="margin-bottom:32px;">
+            <div class="section-header">
+              <h2 class="section-title">🗳️ 레기온 투표</h2>
+              <button class="btn btn-primary btn-sm" id="openPollBtn">+ 새 투표</button>
+            </div>
+            ${renderPollsSection()}
+          </div>
+          <div>
+            <div class="section-header">
+              <h2 class="section-title">⚔️ 파티 & 멤버 모집</h2>
+              <button class="btn btn-primary btn-sm" id="openRecruitBtn">+ 새 모집</button>
+            </div>
+            ${renderRecruitsSection()}
+          </div>
+        `;
+        bindTabDynamicEvents();
+        return;
+      }
+
+      const filtered = posts.filter(post => {
+        const matchTab = currentTab === "all" || post.category === currentTab;
+        const q = searchQuery.trim().toLowerCase();
+        const matchSearch =
+          !q ||
+          post.title.toLowerCase().includes(q) ||
+          post.content.toLowerCase().includes(q) ||
+          post.author.toLowerCase().includes(q);
+        return matchTab && matchSearch;
+      });
+
+      const showRecruitPreview = currentTab === "all" && !searchQuery.trim();
+
+      area.innerHTML = `
+        ${
+          showRecruitPreview
+            ? `
+          <div style="margin-bottom:28px;">
+            <div class="section-header">
+              <h2 class="section-title">🗳️ 진행 중인 투표</h2>
+              <button class="btn btn-ghost btn-sm" id="jumpRecruitTabBtn">투표/모집 탭으로 →</button>
+            </div>
+            ${renderPollsSection()}
+          </div>
+        `
+            : ""
+        }
+        <div>
+          <div class="section-header">
+            <h2 class="section-title">${currentTab === "all" ? "📝 최신 기록" : "게시글 목록"}</h2>
+          </div>
+          ${renderPostsGrid(filtered)}
+        </div>
+      `;
+
+      bindTabDynamicEvents();
+    }
+
+    function bindTabDynamicEvents() {
+      document.querySelectorAll(".card.clickable").forEach(card => {
+        card.addEventListener("click", () => openDetail(Number(card.dataset.id)));
+      });
+
+      document.querySelectorAll(".poll-option").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const pollId = Number(btn.dataset.pollId);
+          const optId = btn.dataset.optId;
+          const poll = polls.find(p => p.id === pollId);
+          if (!poll) return;
+
+          if (poll.pickedOptionId) {
+            const prev = poll.options.find(o => o.id === poll.pickedOptionId);
+            if (prev && prev.votes > 0) prev.votes -= 1;
+          }
+
+          if (poll.pickedOptionId === optId) {
+            poll.pickedOptionId = null;
+          } else {
+            const next = poll.options.find(o => o.id === optId);
+            if (next) next.votes += 1;
+            poll.pickedOptionId = optId;
+          }
+
+          saveData(KEYS.polls, polls);
+          render();
+        });
+      });
+
+      document.querySelectorAll(".join-recruit-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = Number(btn.dataset.recruitId);
+          const item = recruits.find(r => r.id === id);
+          if (!item || item.members.length >= item.max) return;
+          const nick = prompt("참여할 닉네임을 입력해주세요:");
+          if (!nick || !nick.trim()) return;
+          const clean = nick.trim();
+          if (item.members.includes(clean)) {
+            alert("이미 참여 명단에 있는 닉네임이에요!");
+            return;
+          }
+          item.members.push(clean);
+          saveData(KEYS.recruits, recruits);
+          render();
+        });
+      });
+
+      const openPollBtn = document.getElementById("openPollBtn");
+      if (openPollBtn) {
+        openPollBtn.addEventListener("click", () => document.getElementById("pollModal").classList.add("open"));
+      }
+
+      const openRecruitBtn = document.getElementById("openRecruitBtn");
+      if (openRecruitBtn) {
+        openRecruitBtn.addEventListener("click", () => document.getElementById("recruitModal").classList.add("open"));
+      }
+
+      const jumpBtn = document.getElementById("jumpRecruitTabBtn");
+      if (jumpBtn) {
+        jumpBtn.addEventListener("click", () => {
+          currentTab = "recruit";
+          document.querySelectorAll(".tab-btn").forEach(b => {
+            b.classList.toggle("active", b.dataset.tab === "recruit");
+          });
+          render();
+        });
+      }
+    }
+
+    function openDetail(id) {
+      const post = posts.find(p => p.id === id);
+      if (!post) return;
+      const meta = categoryMeta[post.category] || { label: "기록", cls: "" };
+      const tagEl = document.getElementById("detailTag");
+      tagEl.textContent = meta.label;
+      tagEl.className = `tag ${meta.cls}`;
+      document.getElementById("detailTitle").textContent = post.title;
+      document.getElementById("detailMeta").textContent = `작성자: ${post.author} · ${post.date}`;
+      const imgEl = document.getElementById("detailImg");
+      if (post.image) {
+        imgEl.src = post.image;
+        imgEl.style.display = "block";
+      } else {
+        imgEl.style.display = "none";
+      }
+      document.getElementById("detailBody").textContent = post.content;
+      document.getElementById("detailModal").classList.add("open");
+    }
+
+    // 탭 전환 & 검색
+    document.getElementById("tabBar").addEventListener("click", e => {
+      const btn = e.target.closest(".tab-btn");
+      if (!btn) return;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentTab = btn.dataset.tab;
+      render();
+    });
+
+    document.getElementById("searchInput").addEventListener("input", e => {
+      searchQuery = e.target.value;
+      render();
+    });
+
+    // 모달 제어
+    const modals = {
+      write: document.getElementById("writeModal"),
+      detail: document.getElementById("detailModal"),
+      poll: document.getElementById("pollModal"),
+      recruit: document.getElementById("recruitModal"),
+      settings: document.getElementById("settingsModal")
+    };
+
+    document.getElementById("openWriteBtn").addEventListener("click", () => modals.write.classList.add("open"));
+    document.getElementById("closeWriteBtn").addEventListener("click", () => modals.write.classList.remove("open"));
+    document.getElementById("cancelWriteBtn").addEventListener("click", () => modals.write.classList.remove("open"));
+    document.getElementById("closeDetailBtn").addEventListener("click", () => modals.detail.classList.remove("open"));
+    document.getElementById("closePollBtn").addEventListener("click", () => modals.poll.classList.remove("open"));
+    document.getElementById("cancelPollBtn").addEventListener("click", () => modals.poll.classList.remove("open"));
+    document.getElementById("closeRecruitBtn").addEventListener("click", () => modals.recruit.classList.remove("open"));
+    document.getElementById("cancelRecruitBtn").addEventListener("click", () => modals.recruit.classList.remove("open"));
+    document.getElementById("closeSettingsBtn").addEventListener("click", () => modals.settings.classList.remove("open"));
+    document.getElementById("cancelSettingsBtn").addEventListener("click", () => modals.settings.classList.remove("open"));
+
+    Object.values(modals).forEach(backdrop => {
+      backdrop.addEventListener("click", e => {
+        if (e.target === backdrop) backdrop.classList.remove("open");
+      });
+    });
+
+    // 설정 모달 열기 & 테마 선택
+    document.getElementById("openSettingsBtn").addEventListener("click", () => {
+      document.getElementById("cfgBadge").value = config.badge;
+      document.getElementById("cfgName").value = config.name;
+      document.getElementById("cfgSub").value = config.sub;
+      document.getElementById("cfgHeroTitle").value = config.heroTitle;
+      document.getElementById("cfgHeroDesc").value = config.heroDesc;
+      selectedTheme = config.theme || "blue";
+      document.querySelectorAll(".swatch-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.theme === selectedTheme);
+      });
+      modals.settings.classList.add("open");
+    });
+
+    document.getElementById("swatchGroup").addEventListener("click", e => {
+      const btn = e.target.closest(".swatch-btn");
+      if (!btn) return;
+      selectedTheme = btn.dataset.theme;
+      document.querySelectorAll(".swatch-btn").forEach(b => b.classList.toggle("active", b === btn));
+    });
+
+    document.getElementById("resetSettingsBtn").addEventListener("click", () => {
+      config = structuredClone(defaultConfig);
+      saveData(KEYS.config, config);
+      applyConfig();
+      modals.settings.classList.remove("open");
+    });
+
+    document.getElementById("settingsForm").addEventListener("submit", e => {
+      e.preventDefault();
+      config = {
+        badge: document.getElementById("cfgBadge").value.trim() || "L",
+        name: document.getElementById("cfgName").value.trim() || defaultConfig.name,
+        sub: document.getElementById("cfgSub").value.trim() || defaultConfig.sub,
+        heroTitle: document.getElementById("cfgHeroTitle").value.trim() || defaultConfig.heroTitle,
+        heroDesc: document.getElementById("cfgHeroDesc").value.trim() || defaultConfig.heroDesc,
+        theme: selectedTheme
+      };
+      saveData(KEYS.config, config);
+      applyConfig();
+      modals.settings.classList.remove("open");
+    });
+
+    // 새 글 등록
+    document.getElementById("writeForm").addEventListener("submit", e => {
+      e.preventDefault();
+      posts.unshift({
+        id: Date.now(),
+        category: document.getElementById("postCategory").value,
+        author: document.getElementById("postAuthor").value.trim(),
+        title: document.getElementById("postTitle").value.trim(),
+        image: document.getElementById("postImage").value.trim(),
+        content: document.getElementById("postContent").value.trim(),
+        date: new Date().toISOString().slice(0, 10)
+      });
+      saveData(KEYS.posts, posts);
+      e.target.reset();
+      modals.write.classList.remove("open");
+      render();
+    });
+
+    // 새 투표 등록
+    document.getElementById("pollForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const lines = document
+        .getElementById("pollOptions")
+        .value.split("\n")
+        .map(s => s.trim())
+        .filter(Boolean);
+      if (lines.length < 2) {
+        alert("투표 선택지를 2개 이상 입력해주세요!");
+        return;
+      }
+      polls.unshift({
+        id: Date.now(),
+        question: document.getElementById("pollQuestion").value.trim(),
+        author: document.getElementById("pollAuthor").value.trim(),
+        date: new Date().toISOString().slice(0, 10),
+        options: lines.map((text, idx) => ({
+          id: `opt_${Date.now()}_${idx}`,
+          text,
+          votes: 0
+        })),
+        pickedOptionId: null
+      });
+      saveData(KEYS.polls, polls);
+      e.target.reset();
+      modals.poll.classList.remove("open");
+      render();
+    });
+
+    // 새 모집 등록
+    document.getElementById("recruitForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const host = document.getElementById("recruitHost").value.trim();
+      const max = Math.max(2, Number(document.getElementById("recruitMax").value) || 4);
+      recruits.unshift({
+        id: Date.now(),
+        title: document.getElementById("recruitTitle").value.trim(),
+        host,
+        max,
+        members: [host],
+        note: document.getElementById("recruitNote").value.trim()
+      });
+      saveData(KEYS.recruits, recruits);
+      e.target.reset();
+      modals.recruit.classList.remove("open");
+      render();
+    });
+
+    applyConfig();
+    render();
+  </script>
+</body>
+</html>
