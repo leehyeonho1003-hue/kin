@@ -287,6 +287,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .card-actions {
@@ -417,6 +418,11 @@
       border-color: var(--accent);
     }
 
+    .poll-option:disabled {
+      cursor: default;
+      opacity: 0.78;
+    }
+
     .poll-option.voted {
       border-color: var(--accent);
       background: var(--accent-soft);
@@ -442,7 +448,7 @@
       gap: 8px;
     }
 
-    /* 파티 모집 직업 그리드 (투표형 버튼) */
+    /* 파티 모집 직업 그리드 */
     .class-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -499,7 +505,6 @@
       margin-top: 8px;
     }
 
-    /* 명단 확인 모달 내부 스타일 */
     .roster-box {
       background: var(--bg-main);
       border: 1px solid var(--border);
@@ -896,7 +901,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx0-C_eKbB-n1AqpOGfwHIhYIU_sek8VWmXCi4JHvV4OEC5xvrKsqTXKTY4YGI_ig8ZKw/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPZwKYk-evZ2pic30N_xvHv0C3YXy6QtbLCXPovLENsy1Clgy1FHLmm5b0cB8rsmWKqg/exec";
 
     const RECRUIT_CLASSES = [
       "수호성", "검성", "궁성",
@@ -963,7 +968,8 @@
       return {
         ...poll,
         id: Number(poll.id),
-        options
+        options,
+        closed: poll.closed === true || String(poll.closed).toLowerCase() === "true"
       };
     }
 
@@ -1003,6 +1009,7 @@
         question: "이번 주 정규 콘텐츠 진행 요일 투표",
         author: "하늘정원",
         date: "2026-11-20",
+        closed: false,
         options: [
           { id: "a", text: "수요일 21:00", voters: [], votes: 0 },
           { id: "b", text: "목요일 21:30", voters: [], votes: 0 },
@@ -1197,12 +1204,23 @@
             .map(poll => {
               const totalVotes = poll.options.reduce((acc, o) => acc + (o.voters?.length || 0), 0);
               const myChoice = getUserVotedOption(poll, myNickname);
+              const isClosed = Boolean(poll.closed);
               return `
                 <article class="card">
                   <div>
                     <div class="card-top" style="margin-bottom:10px;">
-                      <span class="tag recruit">투표 (1인 1표)</span>
-                      <span class="date">${escapeHtml(poll.date)} · ${escapeHtml(poll.author)}</span>
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="tag ${isClosed ? "chat" : "recruit"}">${isClosed ? "투표 마감" : "투표 진행중"}</span>
+                        <span class="date">${escapeHtml(poll.date)} · ${escapeHtml(poll.author)}</span>
+                      </div>
+                      <div class="card-actions">
+                        <button type="button" class="btn btn-ghost btn-xs toggle-poll-close-btn" data-poll-id="${poll.id}">
+                          ${isClosed ? "재오픈" : "마감"}
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs delete-poll-btn" data-poll-id="${poll.id}">
+                          삭제
+                        </button>
+                      </div>
                     </div>
                     <h3 class="card-title" style="margin-bottom:12px;">${escapeHtml(poll.question)}</h3>
                     <div>
@@ -1217,6 +1235,7 @@
                               class="poll-option ${isMyPick ? "voted" : ""}"
                               data-poll-id="${poll.id}"
                               data-opt-id="${escapeHtml(opt.id)}"
+                              ${isClosed ? "disabled" : ""}
                             >
                               <span class="poll-bar" style="width:${pct}%;"></span>
                               <span class="poll-row">
@@ -1229,7 +1248,13 @@
                         .join("")}
                     </div>
                     <div class="helper-hint">
-                      ${myChoice ? `내 투표: <strong>${escapeHtml(myChoice.text)}</strong> (다른 항목 클릭 시 변경)` : "항목을 클릭해 닉네임으로 투표하세요."}
+                      ${
+                        isClosed
+                          ? "마감된 투표입니다. 결과와 투표자 명단만 확인할 수 있습니다."
+                          : myChoice
+                            ? `내 투표: <strong>${escapeHtml(myChoice.text)}</strong> (다른 항목 클릭 시 변경)`
+                            : "항목을 클릭해 닉네임으로 투표하세요."
+                      }
                     </div>
                   </div>
                   <div class="card-footer">
@@ -1504,6 +1529,7 @@
       const openRecruitBtn = document.getElementById("openRecruitBtn");
       if (openRecruitBtn) openRecruitBtn.onclick = openRecruitCreateModal;
 
+      // 투표 (1인 1표, 마감 여부 확인)
       document.querySelectorAll(".poll-option").forEach(btn => {
         btn.addEventListener("click", async () => {
           const pollId = Number(btn.dataset.pollId);
@@ -1511,6 +1537,11 @@
           const poll = polls.find(p => Number(p.id) === pollId);
           const targetOpt = poll?.options.find(o => o.id === optId);
           if (!poll || !targetOpt) return;
+
+          if (poll.closed) {
+            alert("마감된 투표입니다.");
+            return;
+          }
 
           const voter = promptNickname(myNickname);
           if (!voter) return;
@@ -1534,6 +1565,47 @@
         });
       });
 
+      // 투표 마감 / 재오픈
+      document.querySelectorAll(".toggle-poll-close-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const pollId = Number(btn.dataset.pollId);
+          const poll = polls.find(p => Number(p.id) === pollId);
+          if (!poll) return;
+
+          const nextClosed = !poll.closed;
+          const msg = nextClosed
+            ? `'${poll.question}' 투표를 마감할까요?`
+            : `'${poll.question}' 투표를 다시 열까요?`;
+          if (!confirm(msg)) return;
+
+          poll.closed = nextClosed;
+          saveLocal(KEYS.polls, polls);
+          render();
+
+          await apiPost({ action: "togglePollClosed", pollId, closed: nextClosed });
+          setTimeout(syncFromSheet, 900);
+        });
+      });
+
+      // 투표 삭제
+      document.querySelectorAll(".delete-poll-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const pollId = Number(btn.dataset.pollId);
+          const poll = polls.find(p => Number(p.id) === pollId);
+          if (!poll) return;
+
+          if (!confirm(`'${poll.question}' 투표를 삭제할까요?`)) return;
+
+          polls = polls.filter(p => Number(p.id) !== pollId);
+          saveLocal(KEYS.polls, polls);
+          render();
+
+          await apiPost({ action: "deletePoll", pollId });
+          setTimeout(syncFromSheet, 900);
+        });
+      });
+
+      // 투표자 명단 보기
       document.querySelectorAll(".view-poll-voters-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const pollId = Number(btn.dataset.pollId);
@@ -1542,6 +1614,7 @@
         });
       });
 
+      // 파티 모집 직업 버튼 클릭 (신청 / 취소)
       document.querySelectorAll(".class-btn").forEach(btn => {
         btn.addEventListener("click", async () => {
           const recId = Number(btn.dataset.recruitId);
@@ -1580,6 +1653,7 @@
         });
       });
 
+      // 파티 신청자 명단 보기
       document.querySelectorAll(".view-recruit-roster-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const recId = Number(btn.dataset.recruitId);
@@ -1588,6 +1662,7 @@
         });
       });
 
+      // 모집글 수정
       document.querySelectorAll(".edit-recruit-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const recId = Number(btn.dataset.recruitId);
@@ -1596,6 +1671,7 @@
         });
       });
 
+      // 모집글 삭제
       document.querySelectorAll(".delete-recruit-btn").forEach(btn => {
         btn.addEventListener("click", async () => {
           const recId = Number(btn.dataset.recruitId);
@@ -1642,6 +1718,7 @@
     document.getElementById("closeRecruitBtn").onclick = () => toggleModal("recruitModal", false);
     document.getElementById("cancelRecruitBtn").onclick = () => toggleModal("recruitModal", false);
 
+    // 글 작성
     document.getElementById("writeForm").addEventListener("submit", async e => {
       e.preventDefault();
       const submitBtn = document.getElementById("submitWriteBtn");
@@ -1669,6 +1746,7 @@
       }
     });
 
+    // 투표 생성
     document.getElementById("pollForm").addEventListener("submit", async e => {
       e.preventDefault();
       const lines = document
@@ -1688,6 +1766,7 @@
           question: document.getElementById("pollQuestion").value.trim(),
           author: document.getElementById("pollAuthor").value.trim(),
           date: new Date().toISOString().slice(0, 10),
+          closed: false,
           options: lines.map((text, idx) => ({ id: `opt_${idx}_${Date.now()}`, text, voters: [], votes: 0 }))
         };
         polls.push(newPoll);
@@ -1703,6 +1782,7 @@
       }
     });
 
+    // 모집 생성 & 수정 처리
     document.getElementById("recruitForm").addEventListener("submit", async e => {
       e.preventDefault();
       const submitBtn = document.getElementById("submitRecruitBtn");
@@ -1757,6 +1837,7 @@
       }
     });
 
+    // 레기온 설정
     document.getElementById("openSettingsBtn").onclick = () => {
       selectedTheme = config.theme || "blue";
       document.getElementById("cfgBadge").value = config.badge || "L";
