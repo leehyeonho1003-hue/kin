@@ -19,6 +19,7 @@
       --success: #34d399;
       --warning: #fbbf24;
       --pink: #f472b6;
+      --danger: #f87171;
       --radius: 14px;
     }
 
@@ -36,7 +37,6 @@
       min-height: 100vh;
     }
 
-    /* 상단 헤더 */
     header {
       position: sticky;
       top: 0;
@@ -129,7 +129,7 @@
     }
 
     .btn:disabled {
-      opacity: 0.6;
+      opacity: 0.55;
       cursor: not-allowed;
     }
 
@@ -153,20 +153,34 @@
       background: var(--bg-surface-hover);
     }
 
+    .btn-danger {
+      background: rgba(248, 113, 113, 0.14);
+      color: var(--danger);
+      border: 1px solid rgba(248, 113, 113, 0.3);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(248, 113, 113, 0.24);
+    }
+
     .btn-sm {
       padding: 6px 10px;
       font-size: 12.5px;
       border-radius: 8px;
     }
 
-    /* 메인 컨테이너 */
+    .btn-xs {
+      padding: 4px 8px;
+      font-size: 11.5px;
+      border-radius: 7px;
+    }
+
     .container {
       max-width: 1140px;
       margin: 0 auto;
       padding: 24px 20px 64px;
     }
 
-    /* 레기온 요약 배너 */
     .hero-card {
       background: linear-gradient(135deg, var(--accent-soft), rgba(244, 114, 182, 0.06));
       border: 1px solid var(--border);
@@ -209,7 +223,6 @@
       margin-left: 5px;
     }
 
-    /* 탭 네비게이션 */
     .tabs {
       display: flex;
       gap: 6px;
@@ -241,10 +254,9 @@
       border-bottom-color: var(--accent);
     }
 
-    /* 피드 그리드 */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
       gap: 18px;
     }
 
@@ -275,6 +287,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .tag {
@@ -343,6 +361,8 @@
       border-top: 1px solid rgba(255, 255, 255, 0.05);
       font-size: 13px;
       color: var(--text-muted);
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .author {
@@ -363,7 +383,6 @@
       color: var(--text-main);
     }
 
-    /* 투표 & 모집 섹션 */
     .section-header {
       display: flex;
       justify-content: space-between;
@@ -378,6 +397,7 @@
       font-weight: 700;
     }
 
+    /* 투표 옵션 */
     .poll-option {
       width: 100%;
       text-align: left;
@@ -393,7 +413,7 @@
       transition: border-color 0.18s;
     }
 
-    .poll-option:hover {
+    .poll-option:hover:not(:disabled) {
       border-color: var(--accent);
     }
 
@@ -422,23 +442,86 @@
       gap: 8px;
     }
 
-    .member-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin: 10px 0;
+    /* 파티 모집 직업 그리드 (투표형 버튼) */
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-top: 10px;
     }
 
-    .chip {
-      font-size: 12px;
-      background: var(--bg-elevated);
+    .class-btn {
+      background: var(--bg-main);
       border: 1px solid var(--border);
-      padding: 3px 9px;
-      border-radius: 999px;
+      border-radius: 9px;
+      padding: 7px 8px;
       color: var(--text-main);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      transition: all 0.15s;
     }
 
-    /* 위키 섹션 */
+    .class-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+    }
+
+    .class-btn.has-member {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .class-btn.my-picked {
+      box-shadow: inset 0 0 0 1px var(--success);
+      border-color: var(--success);
+    }
+
+    .class-count {
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: var(--bg-elevated);
+      color: var(--text-muted);
+    }
+
+    .class-btn.has-member .class-count {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .helper-hint {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* 명단 확인 모달 내부 스타일 */
+    .roster-box {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .roster-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .roster-names {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
     .wiki-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -468,7 +551,6 @@
       margin-bottom: 6px;
     }
 
-    /* 모달 */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -645,6 +727,17 @@
     </div>
   </div>
 
+  <!-- 투표자 / 신청자 명단 확인 모달 -->
+  <div class="modal-backdrop" id="rosterModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="rosterModalTitle" style="font-size:18px;">명단 확인</h2>
+        <button class="close-btn" id="closeRosterBtn">✕</button>
+      </div>
+      <div id="rosterModalBody"></div>
+    </div>
+  </div>
+
   <!-- 새 글 작성 모달 -->
   <div class="modal-backdrop" id="writeModal">
     <div class="modal">
@@ -713,14 +806,15 @@
     </div>
   </div>
 
-  <!-- 새 모집 생성 모달 -->
+  <!-- 모집 생성 및 수정 모달 -->
   <div class="modal-backdrop" id="recruitModal">
     <div class="modal">
       <div class="modal-head">
-        <h2 style="font-size:18px;">새 파티 / 멤버 모집</h2>
+        <h2 id="recruitModalTitle" style="font-size:18px;">새 파티 / 멤버 모집</h2>
         <button class="close-btn" id="closeRecruitBtn">✕</button>
       </div>
       <form id="recruitForm">
+        <input type="hidden" id="recruitEditId" value="" />
         <div class="form-group">
           <label for="recruitTitle">모집 제목</label>
           <input id="recruitTitle" class="form-control" type="text" placeholder="예: 금요일 22:00 주간 던전 4인 모집" required />
@@ -802,13 +896,20 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXhvaWhDwK-stc6jGkq1QeyYk6SH0bYDoI_18AcoZVN88e57OcSTnF2zrHtU_Bnbiz9Q/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx0-C_eKbB-n1AqpOGfwHIhYIU_sek8VWmXCi4JHvV4OEC5xvrKsqTXKTY4YGI_ig8ZKw/exec";
+
+    const RECRUIT_CLASSES = [
+      "수호성", "검성", "궁성",
+      "살성", "권성", "정령성",
+      "마도성", "호법성", "치유성"
+    ];
 
     const KEYS = {
       posts: "legion_archive_posts_v2",
-      polls: "legion_archive_polls_v1",
-      recruits: "legion_archive_recruits_v1",
-      config: "legion_archive_config_v1"
+      polls: "legion_archive_polls_v2",
+      recruits: "legion_archive_recruits_v2",
+      config: "legion_archive_config_v1",
+      myNickname: "legion_archive_my_nickname_v1"
     };
 
     const defaultConfig = {
@@ -826,6 +927,45 @@
       emerald: { accent: "#34d399", accent2: "#2dd4bf", accentSoft: "rgba(52, 211, 153, 0.14)" },
       rose: { accent: "#fb7185", accent2: "#f59e0b", accentSoft: "rgba(251, 113, 133, 0.15)" }
     };
+
+    function createEmptySlots() {
+      const obj = {};
+      RECRUIT_CLASSES.forEach(c => { obj[c] = []; });
+      return obj;
+    }
+
+    function normalizeSlots(rawSlots, legacyMembers) {
+      const slots = createEmptySlots();
+      if (rawSlots && typeof rawSlots === "object") {
+        RECRUIT_CLASSES.forEach(c => {
+          if (Array.isArray(rawSlots[c])) {
+            slots[c] = rawSlots[c].filter(Boolean);
+          }
+        });
+      } else if (Array.isArray(legacyMembers) && legacyMembers.length > 0) {
+        slots["수호성"] = legacyMembers.filter(Boolean);
+      }
+      return slots;
+    }
+
+    function normalizePoll(poll) {
+      const options = (Array.isArray(poll.options) ? poll.options : []).map(o => {
+        const voters = Array.isArray(o.voters)
+          ? o.voters.filter(Boolean)
+          : (Number(o.votes) > 0 ? Array.from({ length: Number(o.votes) }, (_, i) => `익명${i + 1}`) : []);
+        return {
+          id: o.id,
+          text: o.text,
+          voters,
+          votes: voters.length
+        };
+      });
+      return {
+        ...poll,
+        id: Number(poll.id),
+        options
+      };
+    }
 
     const initialPosts = [
       {
@@ -864,11 +1004,10 @@
         author: "하늘정원",
         date: "2026-11-20",
         options: [
-          { id: "a", text: "수요일 21:00", votes: 5 },
-          { id: "b", text: "목요일 21:30", votes: 7 },
-          { id: "c", text: "토요일 20:00", votes: 4 }
-        ],
-        pickedOptionId: null
+          { id: "a", text: "수요일 21:00", voters: [], votes: 0 },
+          { id: "b", text: "목요일 21:30", voters: [], votes: 0 },
+          { id: "c", text: "토요일 20:00", voters: [], votes: 0 }
+        ]
       }
     ];
 
@@ -878,8 +1017,8 @@
         title: "오늘 22:00 주간 던전 4인 파티 모집",
         host: "노을빛",
         max: 4,
-        members: ["노을빛", "달토끼"],
-        note: "초행/숙련 모두 환영! 편하게 닉네임 남기고 참여 눌러주세요."
+        slots: { ...createEmptySlots(), 수호성: ["노을빛"] },
+        note: "초행/숙련 모두 환영! 원하는 직업 버튼을 눌러 신청하거나 본인 신청 버튼을 다시 눌러 취소하세요."
       }
     ];
 
@@ -891,8 +1030,14 @@
 
     let config = loadLocal(KEYS.config, defaultConfig);
     let posts = loadLocal(KEYS.posts, initialPosts);
-    let polls = loadLocal(KEYS.polls, initialPolls);
-    let recruits = loadLocal(KEYS.recruits, initialRecruits);
+    let polls = loadLocal(KEYS.polls, initialPolls).map(normalizePoll);
+    let recruits = loadLocal(KEYS.recruits, initialRecruits).map(r => ({
+      ...r,
+      id: Number(r.id),
+      max: Number(r.max) || 4,
+      slots: normalizeSlots(r.slots, r.members)
+    }));
+    let myNickname = loadLocal(KEYS.myNickname, "");
     let currentTab = "all";
     let searchQuery = "";
     let selectedTheme = config.theme || "blue";
@@ -900,7 +1045,7 @@
     function loadLocal(key, fallback) {
       try {
         const raw = localStorage.getItem(key);
-        if (raw) return JSON.parse(raw);
+        if (raw !== null) return JSON.parse(raw);
       } catch (e) {}
       return structuredClone(fallback);
     }
@@ -909,6 +1054,33 @@
       try {
         localStorage.setItem(key, JSON.stringify(value));
       } catch (e) {}
+    }
+
+    function promptNickname(defaultValue = "") {
+      const input = prompt("투표/파티 신청에 사용할 닉네임을 입력하세요 (1인 1표 적용):", defaultValue || myNickname || "");
+      if (input === null) return "";
+      const clean = input.trim();
+      if (!clean) {
+        alert("닉네임을 입력해야 참여할 수 있습니다.");
+        return "";
+      }
+      myNickname = clean;
+      saveLocal(KEYS.myNickname, myNickname);
+      return clean;
+    }
+
+    function getTotalRecruitApplicants(rec) {
+      return RECRUIT_CLASSES.reduce((sum, c) => sum + (rec.slots[c]?.length || 0), 0);
+    }
+
+    function getUserPickedClass(rec, nick) {
+      if (!nick) return null;
+      return RECRUIT_CLASSES.find(c => (rec.slots[c] || []).includes(nick)) || null;
+    }
+
+    function getUserVotedOption(poll, nick) {
+      if (!nick) return null;
+      return poll.options.find(o => (o.voters || []).includes(nick)) || null;
     }
 
     async function apiGetAll() {
@@ -940,12 +1112,7 @@
           saveLocal(KEYS.posts, posts);
         }
         if (Array.isArray(remote.polls)) {
-          const localPicked = new Map(polls.map(p => [Number(p.id), p.pickedOptionId]));
-          polls = remote.polls.map(p => ({
-            ...p,
-            id: Number(p.id),
-            pickedOptionId: localPicked.get(Number(p.id)) || null
-          }));
+          polls = remote.polls.map(normalizePoll);
           saveLocal(KEYS.polls, polls);
         }
         if (Array.isArray(remote.recruits)) {
@@ -953,7 +1120,7 @@
             ...r,
             id: Number(r.id),
             max: Number(r.max) || 4,
-            members: Array.isArray(r.members) ? r.members : []
+            slots: normalizeSlots(r.slots, r.members)
           }));
           saveLocal(KEYS.recruits, recruits);
         }
@@ -1028,37 +1195,48 @@
             .slice()
             .reverse()
             .map(poll => {
-              const totalVotes = poll.options.reduce((acc, o) => acc + Number(o.votes || 0), 0);
+              const totalVotes = poll.options.reduce((acc, o) => acc + (o.voters?.length || 0), 0);
+              const myChoice = getUserVotedOption(poll, myNickname);
               return `
                 <article class="card">
                   <div>
                     <div class="card-top" style="margin-bottom:10px;">
-                      <span class="tag recruit">투표</span>
+                      <span class="tag recruit">투표 (1인 1표)</span>
                       <span class="date">${escapeHtml(poll.date)} · ${escapeHtml(poll.author)}</span>
                     </div>
                     <h3 class="card-title" style="margin-bottom:12px;">${escapeHtml(poll.question)}</h3>
                     <div>
                       ${poll.options
                         .map(opt => {
-                          const votes = Number(opt.votes || 0);
-                          const pct = totalVotes ? Math.round((votes / totalVotes) * 100) : 0;
-                          const isPicked = poll.pickedOptionId === opt.id;
+                          const count = opt.voters?.length || 0;
+                          const pct = totalVotes ? Math.round((count / totalVotes) * 100) : 0;
+                          const isMyPick = myChoice?.id === opt.id;
                           return `
-                            <button type="button" class="poll-option ${isPicked ? "voted" : ""}" data-poll-id="${poll.id}" data-opt-id="${escapeHtml(opt.id)}">
+                            <button
+                              type="button"
+                              class="poll-option ${isMyPick ? "voted" : ""}"
+                              data-poll-id="${poll.id}"
+                              data-opt-id="${escapeHtml(opt.id)}"
+                            >
                               <span class="poll-bar" style="width:${pct}%;"></span>
                               <span class="poll-row">
-                                <span>${isPicked ? "✓ " : ""}${escapeHtml(opt.text)}</span>
-                                <span><strong>${votes}표</strong> (${pct}%)</span>
+                                <span>${isMyPick ? "✓ " : ""}${escapeHtml(opt.text)}</span>
+                                <span><strong>${count}표</strong> (${pct}%)</span>
                               </span>
                             </button>
                           `;
                         })
                         .join("")}
                     </div>
+                    <div class="helper-hint">
+                      ${myChoice ? `내 투표: <strong>${escapeHtml(myChoice.text)}</strong> (다른 항목 클릭 시 변경)` : "항목을 클릭해 닉네임으로 투표하세요."}
+                    </div>
                   </div>
                   <div class="card-footer">
                     <span>총 ${totalVotes}표 참여</span>
-                    <span>클릭하여 투표</span>
+                    <button type="button" class="btn btn-ghost btn-xs view-poll-voters-btn" data-poll-id="${poll.id}">
+                      투표자 보기
+                    </button>
                   </div>
                 </article>
               `;
@@ -1078,24 +1256,55 @@
             .slice()
             .reverse()
             .map(item => {
-              const isFull = item.members.length >= item.max;
+              const totalCount = getTotalRecruitApplicants(item);
+              const isFull = totalCount >= item.max;
+              const myClass = getUserPickedClass(item, myNickname);
               return `
                 <article class="card">
                   <div>
                     <div class="card-top" style="margin-bottom:10px;">
-                      <span class="tag ${isFull ? "chat" : "guide"}">${isFull ? "모집 마감" : "모집 중"}</span>
-                      <span class="date">${item.members.length} / ${item.max}명</span>
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="tag ${isFull ? "chat" : "guide"}">${isFull ? "모집 마감" : "모집 중"}</span>
+                        <span class="date">${totalCount} / ${item.max}명</span>
+                      </div>
+                      <div class="card-actions">
+                        <button type="button" class="btn btn-ghost btn-xs edit-recruit-btn" data-recruit-id="${item.id}">수정</button>
+                        <button type="button" class="btn btn-danger btn-xs delete-recruit-btn" data-recruit-id="${item.id}">삭제</button>
+                      </div>
                     </div>
                     <h3 class="card-title" style="margin-bottom:6px;">${escapeHtml(item.title)}</h3>
-                    <p class="card-excerpt" style="-webkit-line-clamp:4;">${escapeHtml(item.note)}</p>
-                    <div class="member-chips">
-                      ${item.members.map(m => `<span class="chip">👤 ${escapeHtml(m)}</span>`).join("")}
+                    <p class="card-excerpt" style="-webkit-line-clamp:3;">${escapeHtml(item.note)}</p>
+
+                    <div class="class-grid">
+                      ${RECRUIT_CLASSES.map(cls => {
+                        const list = item.slots[cls] || [];
+                        const count = list.length;
+                        const isMine = myClass === cls;
+                        const disabledByFull = isFull && !isMine;
+                        return `
+                          <button
+                            type="button"
+                            class="class-btn ${count > 0 ? "has-member" : ""} ${isMine ? "my-picked" : ""}"
+                            data-recruit-id="${item.id}"
+                            data-class="${escapeHtml(cls)}"
+                            ${disabledByFull ? "disabled" : ""}
+                            title="${isMine ? "클릭하여 신청 취소" : `${cls} 신청하기`}"
+                          >
+                            <span>${isMine ? "✓ " : ""}${escapeHtml(cls)}</span>
+                            <span class="class-count">${count}</span>
+                          </button>
+                        `;
+                      }).join("")}
+                    </div>
+                    <div class="helper-hint">
+                      ${myClass ? `내 신청 직업: <strong>${escapeHtml(myClass)}</strong> (같은 버튼 클릭 시 취소)` : "직업 버튼을 눌러 신청하세요."}
                     </div>
                   </div>
+
                   <div class="card-footer">
                     <span>모집장: ${escapeHtml(item.host)}</span>
-                    <button type="button" class="btn btn-primary btn-sm join-recruit-btn" data-recruit-id="${item.id}" ${isFull ? "disabled style='opacity:0.45;cursor:not-allowed;'" : ""}>
-                      ${isFull ? "정원 마감" : "+ 참여하기"}
+                    <button type="button" class="btn btn-ghost btn-xs view-recruit-roster-btn" data-recruit-id="${item.id}">
+                      신청자 보기
                     </button>
                   </div>
                 </article>
@@ -1104,6 +1313,49 @@
             .join("")}
         </div>
       `;
+    }
+
+    function openPollVotersModal(poll) {
+      document.getElementById("rosterModalTitle").textContent = `투표자 명단 · ${poll.question}`;
+      const bodyEl = document.getElementById("rosterModalBody");
+      bodyEl.innerHTML = poll.options
+        .map(opt => {
+          const voters = opt.voters || [];
+          return `
+            <div class="roster-box">
+              <div class="roster-title">
+                <span>${escapeHtml(opt.text)}</span>
+                <span style="color:var(--accent);">${voters.length}명</span>
+              </div>
+              <div class="roster-names">
+                ${voters.length ? voters.map(v => escapeHtml(v)).join(", ") : "아직 투표한 사람이 없습니다."}
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+      document.getElementById("rosterModal").classList.add("open");
+    }
+
+    function openRecruitRosterModal(rec) {
+      const totalCount = getTotalRecruitApplicants(rec);
+      document.getElementById("rosterModalTitle").textContent = `파티 신청자 명단 (${totalCount}/${rec.max}명) · ${rec.title}`;
+      const bodyEl = document.getElementById("rosterModalBody");
+      bodyEl.innerHTML = RECRUIT_CLASSES.map(cls => {
+        const list = rec.slots[cls] || [];
+        return `
+          <div class="roster-box">
+            <div class="roster-title">
+              <span>${escapeHtml(cls)}</span>
+              <span style="color:${list.length ? "var(--accent)" : "var(--text-muted)"};">${list.length}명</span>
+            </div>
+            <div class="roster-names">
+              ${list.length ? list.map(n => escapeHtml(n)).join(", ") : "-"}
+            </div>
+          </div>
+        `;
+      }).join("");
+      document.getElementById("rosterModal").classList.add("open");
     }
 
     function renderWiki() {
@@ -1122,7 +1374,7 @@
             <ul>
               <li>상단 '⚙ 레기온 설정'으로 우리 레기온 이름·색상 꾸미기</li>
               <li>공략 탭에 팁 정리, 스샷 탭에 추억 남기기</li>
-              <li>가벼운 파티나 일퀘도 모집 탭에 편하게 등록</li>
+              <li>파티 모집 탭에서 원하는 직업 버튼을 눌러 신청</li>
             </ul>
           </div>
           <div class="wiki-box">
@@ -1203,6 +1455,26 @@
       bindDynamicActions();
     }
 
+    function openRecruitCreateModal() {
+      document.getElementById("recruitEditId").value = "";
+      document.getElementById("recruitModalTitle").textContent = "새 파티 / 멤버 모집";
+      document.getElementById("submitRecruitBtn").textContent = "모집 올리기";
+      document.getElementById("recruitForm").reset();
+      document.getElementById("recruitMax").value = 4;
+      document.getElementById("recruitModal").classList.add("open");
+    }
+
+    function openRecruitEditModal(rec) {
+      document.getElementById("recruitEditId").value = rec.id;
+      document.getElementById("recruitModalTitle").textContent = "모집글 수정하기";
+      document.getElementById("submitRecruitBtn").textContent = "수정 저장";
+      document.getElementById("recruitTitle").value = rec.title;
+      document.getElementById("recruitHost").value = rec.host;
+      document.getElementById("recruitMax").value = rec.max;
+      document.getElementById("recruitNote").value = rec.note;
+      document.getElementById("recruitModal").classList.add("open");
+    }
+
     function bindDynamicActions() {
       document.querySelectorAll("article.card.clickable").forEach(card => {
         card.addEventListener("click", () => {
@@ -1230,47 +1502,119 @@
       if (openPollBtn) openPollBtn.onclick = () => document.getElementById("pollModal").classList.add("open");
 
       const openRecruitBtn = document.getElementById("openRecruitBtn");
-      if (openRecruitBtn) openRecruitBtn.onclick = () => document.getElementById("recruitModal").classList.add("open");
+      if (openRecruitBtn) openRecruitBtn.onclick = openRecruitCreateModal;
 
       document.querySelectorAll(".poll-option").forEach(btn => {
         btn.addEventListener("click", async () => {
           const pollId = Number(btn.dataset.pollId);
           const optId = btn.dataset.optId;
           const poll = polls.find(p => Number(p.id) === pollId);
-          const opt = poll?.options.find(o => o.id === optId);
-          if (!poll || !opt) return;
+          const targetOpt = poll?.options.find(o => o.id === optId);
+          if (!poll || !targetOpt) return;
 
-          opt.votes = Number(opt.votes || 0) + 1;
-          poll.pickedOptionId = optId;
+          const voter = promptNickname(myNickname);
+          if (!voter) return;
+
+          if ((targetOpt.voters || []).includes(voter)) {
+            alert("이미 해당 선택지에 투표하셨습니다.");
+            return;
+          }
+
+          poll.options.forEach(o => {
+            o.voters = (o.voters || []).filter(v => v !== voter);
+          });
+          targetOpt.voters.push(voter);
+          poll.options.forEach(o => { o.votes = o.voters.length; });
+
           saveLocal(KEYS.polls, polls);
           render();
 
-          await apiPost({ action: "votePoll", pollId, optionId: optId });
+          await apiPost({ action: "castVote", pollId, optionId: optId, voter });
           setTimeout(syncFromSheet, 900);
         });
       });
 
-      document.querySelectorAll(".join-recruit-btn").forEach(btn => {
+      document.querySelectorAll(".view-poll-voters-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const pollId = Number(btn.dataset.pollId);
+          const poll = polls.find(p => Number(p.id) === pollId);
+          if (poll) openPollVotersModal(poll);
+        });
+      });
+
+      document.querySelectorAll(".class-btn").forEach(btn => {
         btn.addEventListener("click", async () => {
           const recId = Number(btn.dataset.recruitId);
+          const className = btn.dataset.class;
           const rec = recruits.find(r => Number(r.id) === recId);
-          if (!rec || rec.members.length >= rec.max) return;
+          if (!rec || !className) return;
 
-          const nickname = prompt("참여할 캐릭터/닉네임을 입력하세요:");
-          if (!nickname || !nickname.trim()) return;
+          const voter = promptNickname(myNickname);
+          if (!voter) return;
 
-          const cleanNick = nickname.trim();
-          rec.members.push(cleanNick);
+          const list = rec.slots[className] || [];
+          const totalCount = getTotalRecruitApplicants(rec);
+          const alreadyInClass = list.includes(voter);
+
+          if (alreadyInClass) {
+            const ok = confirm(`'${className}'에서 '${voter}' 님의 신청을 취소할까요?`);
+            if (!ok) return;
+            rec.slots[className] = list.filter(n => n !== voter);
+          } else {
+            if (totalCount >= rec.max) {
+              alert("모집 정원이 가득 찼습니다.");
+              return;
+            }
+            const prevClass = getUserPickedClass(rec, voter);
+            if (prevClass && prevClass !== className) {
+              rec.slots[prevClass] = (rec.slots[prevClass] || []).filter(n => n !== voter);
+            }
+            rec.slots[className] = [...list, voter];
+          }
+
           saveLocal(KEYS.recruits, recruits);
           render();
 
-          await apiPost({ action: "joinRecruit", recruitId: recId, nickname: cleanNick });
+          await apiPost({ action: "toggleRecruitClass", recruitId: recId, className, nickname: voter });
+          setTimeout(syncFromSheet, 900);
+        });
+      });
+
+      document.querySelectorAll(".view-recruit-roster-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const recId = Number(btn.dataset.recruitId);
+          const rec = recruits.find(r => Number(r.id) === recId);
+          if (rec) openRecruitRosterModal(rec);
+        });
+      });
+
+      document.querySelectorAll(".edit-recruit-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const recId = Number(btn.dataset.recruitId);
+          const rec = recruits.find(r => Number(r.id) === recId);
+          if (rec) openRecruitEditModal(rec);
+        });
+      });
+
+      document.querySelectorAll(".delete-recruit-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const recId = Number(btn.dataset.recruitId);
+          const rec = recruits.find(r => Number(r.id) === recId);
+          if (!rec) return;
+
+          const ok = confirm(`'${rec.title}' 모집글을 삭제할까요?`);
+          if (!ok) return;
+
+          recruits = recruits.filter(r => Number(r.id) !== recId);
+          saveLocal(KEYS.recruits, recruits);
+          render();
+
+          await apiPost({ action: "deleteRecruit", recruitId: recId });
           setTimeout(syncFromSheet, 900);
         });
       });
     }
 
-    // 탭 & 검색 & 수동 동기화
     document.getElementById("tabBar").addEventListener("click", e => {
       const btn = e.target.closest(".tab-btn");
       if (!btn) return;
@@ -1287,18 +1631,17 @@
 
     document.getElementById("syncBtn").addEventListener("click", syncFromSheet);
 
-    // 모달 열기/닫기
     const toggleModal = (id, open) => document.getElementById(id).classList.toggle("open", open);
     document.getElementById("openWriteBtn").onclick = () => toggleModal("writeModal", true);
     document.getElementById("closeWriteBtn").onclick = () => toggleModal("writeModal", false);
     document.getElementById("cancelWriteBtn").onclick = () => toggleModal("writeModal", false);
     document.getElementById("closeDetailBtn").onclick = () => toggleModal("detailModal", false);
+    document.getElementById("closeRosterBtn").onclick = () => toggleModal("rosterModal", false);
     document.getElementById("closePollBtn").onclick = () => toggleModal("pollModal", false);
     document.getElementById("cancelPollBtn").onclick = () => toggleModal("pollModal", false);
     document.getElementById("closeRecruitBtn").onclick = () => toggleModal("recruitModal", false);
     document.getElementById("cancelRecruitBtn").onclick = () => toggleModal("recruitModal", false);
 
-    // 글 작성
     document.getElementById("writeForm").addEventListener("submit", async e => {
       e.preventDefault();
       const submitBtn = document.getElementById("submitWriteBtn");
@@ -1326,7 +1669,6 @@
       }
     });
 
-    // 투표 생성
     document.getElementById("pollForm").addEventListener("submit", async e => {
       e.preventDefault();
       const lines = document
@@ -1346,8 +1688,7 @@
           question: document.getElementById("pollQuestion").value.trim(),
           author: document.getElementById("pollAuthor").value.trim(),
           date: new Date().toISOString().slice(0, 10),
-          options: lines.map((text, idx) => ({ id: `opt_${idx}_${Date.now()}`, text, votes: 0 })),
-          pickedOptionId: null
+          options: lines.map((text, idx) => ({ id: `opt_${idx}_${Date.now()}`, text, voters: [], votes: 0 }))
         };
         polls.push(newPoll);
         saveLocal(KEYS.polls, polls);
@@ -1362,35 +1703,60 @@
       }
     });
 
-    // 모집 생성
     document.getElementById("recruitForm").addEventListener("submit", async e => {
       e.preventDefault();
       const submitBtn = document.getElementById("submitRecruitBtn");
       submitBtn.disabled = true;
       try {
+        const editIdRaw = document.getElementById("recruitEditId").value;
+        const title = document.getElementById("recruitTitle").value.trim();
         const host = document.getElementById("recruitHost").value.trim();
-        const newRecruit = {
-          id: Date.now(),
-          title: document.getElementById("recruitTitle").value.trim(),
-          host,
-          max: Number(document.getElementById("recruitMax").value) || 4,
-          members: [host],
-          note: document.getElementById("recruitNote").value.trim()
-        };
-        recruits.push(newRecruit);
-        saveLocal(KEYS.recruits, recruits);
-        e.target.reset();
-        toggleModal("recruitModal", false);
-        render();
+        const max = Number(document.getElementById("recruitMax").value) || 4;
+        const note = document.getElementById("recruitNote").value.trim();
 
-        await apiPost({ action: "addRecruit", recruit: newRecruit });
-        setTimeout(syncFromSheet, 900);
+        if (editIdRaw) {
+          const editId = Number(editIdRaw);
+          const target = recruits.find(r => Number(r.id) === editId);
+          if (target) {
+            const currentApplicants = getTotalRecruitApplicants(target);
+            if (max < currentApplicants) {
+              alert(`현재 신청 인원(${currentApplicants}명)보다 적은 정원으로는 수정할 수 없습니다.`);
+              return;
+            }
+            target.title = title;
+            target.host = host;
+            target.max = max;
+            target.note = note;
+            saveLocal(KEYS.recruits, recruits);
+            toggleModal("recruitModal", false);
+            render();
+
+            await apiPost({ action: "editRecruit", recruit: target });
+            setTimeout(syncFromSheet, 900);
+          }
+        } else {
+          const newRecruit = {
+            id: Date.now(),
+            title,
+            host,
+            max,
+            slots: createEmptySlots(),
+            note
+          };
+          recruits.push(newRecruit);
+          saveLocal(KEYS.recruits, recruits);
+          e.target.reset();
+          toggleModal("recruitModal", false);
+          render();
+
+          await apiPost({ action: "addRecruit", recruit: newRecruit });
+          setTimeout(syncFromSheet, 900);
+        }
       } finally {
         submitBtn.disabled = false;
       }
     });
 
-    // 레기온 설정
     document.getElementById("openSettingsBtn").onclick = () => {
       selectedTheme = config.theme || "blue";
       document.getElementById("cfgBadge").value = config.badge || "L";
